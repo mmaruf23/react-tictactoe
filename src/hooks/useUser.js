@@ -1,3 +1,10 @@
+/**
+ * Mengambil nama username dari localStorage
+ * atau mengenerate Guest*random jika tidak ditemukan
+ * lalu menyimpannya
+ * 
+ * @returns username player
+ */
 export default function useUser() {
   const user = localStorage.getItem('user');
   

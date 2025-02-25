@@ -1,32 +1,36 @@
 import { Link } from "react-router";
 import { useOnline } from "../hooks/useOnline";
-import Enter from "./EnterIcon";
-import useUser from "../hooks/useUser";
+import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import { Joystick } from "lucide-react";
 
 export default function Home() {
-
+  const [socket, setSocket] = useState(null);
   const isOnline = useOnline();
-  const user = useUser();
 
+  useEffect(() => {
+    if (!isOnline) {
+      if (socket) {
+        socket.close();
+        setSocket(null);
+      }
+      return;
+    }
+  }, [isOnline, socket]);
 
   return (
     <div className="h-screen w-screen bg-black flex justify-center">
-      <div className="w-[425px]">
-        <div className="flex justify-between">
-          {isOnline ?
-            <Link className="mt-4 text-green-600">Online</Link> :
-            <Link onClick={() => { alert("Saat offline hanya bisa mode single device!"); }} className="mt-4 text-red-600">Offline</Link>}
-          <Link to={"/user"} className="mt-4 underline text-white font-serif" >{user}</Link>
-        </div>
-        <div className="min-h-[500px] flex justify-center pt-5">
+      <div className="w-[425px] flex flex-col">
+        <Navbar />
+        <div className="min-h-[500px] flex justify-center pt-5 flex-1 mt-20">
           <div className="flex flex-col items-center gap-3">
             <Link to={"/single"}>
-              <div className="bg-white rounded-lg w-64 h-10 flex justify-center items-center">
+              <div className="bg-white hover:bg-gray-300 rounded-lg w-64 h-10 flex justify-center items-center">
                 <span className="text-xl font-mono">Play single</span>
               </div>
             </Link>
             <Link to={"/multi"}>
-              <div className={`rounded-lg w-64 h-10 flex justify-center items-center ${isOnline ? "bg-white" : "bg-gray-500"}`}>
+              <div className={`rounded-lg w-64 h-10 flex justify-center items-center ${isOnline ? "bg-white hover:bg-gray-300" : "bg-gray-500"}`}>
                 <span className="text-xl font-mono">Create room</span>
               </div>
             </Link>
@@ -36,7 +40,7 @@ export default function Home() {
                 <div className="border border-blue-500 rounded-lg w-64 h-10 flex justify-between px-4 items-center">
                   <span className="text-blue-500 font-mono text-xl">OtherUser&apos;s room</span>
                   <span className="text-blue-500">
-                    {<Enter />}
+                    {<Joystick />}
                   </span>
                 </div>
               </Link>

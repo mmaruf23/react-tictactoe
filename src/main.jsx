@@ -10,7 +10,7 @@ import MultiMode from './pages/MultiMode.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/react-tictactoe">
       <Routes>
         <Route index element={<Home />} />
         <Route path='/user' element={<User />} />
